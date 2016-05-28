@@ -49,3 +49,23 @@ void spLoggerDestroy() {
 	free(logger);//free allocation
 	logger = NULL;
 }
+
+SP_LOGGER_MSG spLoggerPrintError(const char* msg, const char* file, const char* function, const int line) {
+	return SP_LOGGER_SUCCESS; // TODO
+}
+
+SP_LOGGER_MSG spLoggerPrintWarning(const char* msg, const char* file, const char* function, const int line) {
+	return SP_LOGGER_SUCCESS; // TODO
+}
+
+SP_LOGGER_MSG spLoggerPrintInfo(const char* msg) {
+	return SP_LOGGER_SUCCESS; // TODO
+}
+
+SP_LOGGER_MSG spLoggerPrintDebug(const char* msg, const char* file, const char* function, const int line) {
+	return SP_LOGGER_SUCCESS; // TODO
+}
+
+SP_LOGGER_MSG spLoggerPrintMsg(const char* msg) {
+	return SP_LOGGER_SUCCESS; // TODO
+}

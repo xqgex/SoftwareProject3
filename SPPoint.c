@@ -1,5 +1,7 @@
 #include "SPPoint.h"
-#include <stdlib.h>
+#include <stdio.h> //
+#include <stdlib.h> //
+#include <string.h> //
 
 typedef struct sp_point_t{
 	double* data;
