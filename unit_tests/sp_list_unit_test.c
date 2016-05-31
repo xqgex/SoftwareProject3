@@ -202,6 +202,28 @@ static bool testListGetFirst() {
 	return true;
 }
 
+static bool testListGetLast() {
+	SPList list = spListCreate();
+	ASSERT_TRUE(spListGetLast(list) == NULL);
+	SPListElement e1 = spListElementCreate(1, 1.0);
+	SPListElement e2 = spListElementCreate(2, 2.0);
+	SPListElement e3 = spListElementCreate(3, 3.0);
+	SPListElement e4 = spListElementCreate(4, 4.0);
+	SPList list2 = quickList(4, e1, e2, e3, e4);
+	SPListElement last = spListGetLast(list2);
+	ASSERT_TRUE(spListElementCompare(e4, last) == 0);
+	ASSERT_TRUE(
+			spListElementCompare(last, spListGetLast(list2)) == 0
+					&& spListGetLast(list2) == last);
+	spListDestroy(list);
+	spListDestroy(list2);
+	spListElementDestroy(e1);
+	spListElementDestroy(e2);
+	spListElementDestroy(e3);
+	spListElementDestroy(e4);
+	return true;
+}
+
 static bool testListGetNext() {
 	ASSERT_TRUE(spListGetNext(NULL) == NULL);
 	SPListElement e1 = spListElementCreate(1, 1.0);
@@ -210,6 +232,22 @@ static bool testListGetNext() {
 	SPListElement e4 = spListElementCreate(4, 4.0);
 	SPList list2 = quickList(4, e1, e2, e3, e4);
 	ASSERT_TRUE(spListGetNext(list2) == NULL);
+	spListDestroy(list2);
+	spListElementDestroy(e1);
+	spListElementDestroy(e2);
+	spListElementDestroy(e3);
+	spListElementDestroy(e4);
+	return true;
+}
+
+static bool testListGetPrevious() {
+	ASSERT_TRUE(spListGetNext(NULL) == NULL);
+	SPListElement e1 = spListElementCreate(1, 1.0);
+	SPListElement e2 = spListElementCreate(2, 2.0);
+	SPListElement e3 = spListElementCreate(3, 3.0);
+	SPListElement e4 = spListElementCreate(4, 4.0);
+	SPList list2 = quickList(4, e1, e2, e3, e4);
+	ASSERT_TRUE(spListGetPrevious(list2) == NULL);
 	spListDestroy(list2);
 	spListElementDestroy(e1);
 	spListElementDestroy(e2);
@@ -338,12 +376,49 @@ static bool testListClear() {
 	spListElementDestroy(e4);
 	return true;
 }
-
 static bool testListDestroy() {
 	spListDestroy(NULL);
 	return true;
 }
-
+static bool testListForEach() {
+	SPListElement e1 = spListElementCreate(1, 1.0);
+	SPListElement e2 = spListElementCreate(2, 2.0);
+	SPListElement e3 = spListElementCreate(3, 3.0);
+	SPListElement e4 = spListElementCreate(4, 4.0);
+    SPListElement e5 = spListElementCreate(5, 5.0);
+	SPListElement arr[5] = {e1,e2,e3,e4,e5};
+	int i = 1;
+	SPList list = quickList(3, e2, e3, e4);
+	SP_LIST_FOREACH(SPListElement,e,list){
+		ASSERT_TRUE(spListElementCompare(e,arr[i]) == 0);
+		i++;
+	}
+	ASSERT_TRUE(spListInsertFirst(list,e1) == SP_LIST_SUCCESS);
+	i=0;
+	SP_LIST_FOREACH(SPListElement,e,list){
+		ASSERT_TRUE(spListElementCompare(e,arr[i]) == 0);
+		i++;
+	}
+	ASSERT_TRUE(i==4);//number of elements = 4
+	ASSERT_TRUE(spListInsertLast(list,e5) == SP_LIST_SUCCESS);
+	i=0;
+	SP_LIST_FOREACH(SPListElement,e,list){
+		ASSERT_TRUE(spListElementCompare(e,arr[i]) ==  0);
+		i++;
+	}
+	ASSERT_TRUE(i==5);//number of elements should be 5
+	ASSERT_TRUE(spListClear(list) == SP_LIST_SUCCESS);
+	SP_LIST_FOREACH(SPListElement,e,list){
+		ASSERT_TRUE(false);//Should not enter this loop because list is empty
+	}
+	spListDestroy(list);
+	spListElementDestroy(e1);
+	spListElementDestroy(e2);
+	spListElementDestroy(e3);
+	spListElementDestroy(e4);
+	spListElementDestroy(e5);
+	return true;
+}
 int main() {
 	RUN_TEST(testElementCreate);
 	RUN_TEST(testElementCopy);
@@ -356,12 +431,15 @@ int main() {
 	RUN_TEST(testListCopy);
 	RUN_TEST(testListGetSize);
 	RUN_TEST(testListGetFirst);
+	RUN_TEST(testListGetLast);
 	RUN_TEST(testListGetNext);
+	RUN_TEST(testListGetPrevious);
 	RUN_TEST(testListInsertFirst);
 	RUN_TEST(testListInsertLast);
 	RUN_TEST(testListInsertBeforeCurrent);
 	RUN_TEST(testListInsertAfterCurrent);
 	RUN_TEST(testListClear);
 	RUN_TEST(testListDestroy);
+	RUN_TEST(testListForEach);
 	return 0;
 }
