@@ -1,6 +1,7 @@
 #include "SPBPriorityQueue.h"
 #include "SPList.h"
 #include <stdlib.h>
+#include <assert.h>
 
 typedef struct sp_bp_queue_t{
 	SPList elementList;
@@ -55,14 +56,14 @@ void spBPQueueClear(SPBPQueue source){
 
 int spBPQueueSize(SPBPQueue source){
 	if (source == NULL){
-		return 0; //TODO check return value in the case of source = null
+		return -1;
 	}
 	return spListGetSize(source->elementList);
 }
 
 int spBPQueueGetMaxSize(SPBPQueue source){
 	if (source == NULL){
-		return 0; //TODO check return value in the case of source = null
+		return -1;
 	}
 	return source->maxSize;
 }
@@ -70,33 +71,30 @@ int spBPQueueGetMaxSize(SPBPQueue source){
 SP_BPQUEUE_MSG spBPQueueEnqueue(SPBPQueue source, SPListElement element){
 	// Function variables
 	SPListElement iter;
-	int i; // Generic loop variable
+	SP_LIST_MSG listIndicator;
 	if (source == NULL || element == NULL){
 		return SP_BPQUEUE_INVALID_ARGUMENT;
 	}
 	iter = spListGetFirst(source->elementList);
 	if (iter == NULL){ // The list is empty
-		spListInsertFirst(source->elementList,element);
+		listIndicator = spListInsertFirst(source->elementList,element);
+		if (listIndicator == SP_LIST_OUT_OF_MEMORY) //Allocation Fails
+			return SP_BPQUEUE_OUT_OF_MEMORY;
 		return SP_BPQUEUE_SUCCESS;
 	}
 	while (iter != NULL && spListElementCompare(iter,element) < 0){ // Find insertion point
 		iter = spListGetNext(source->elementList);
 	}
-	// Insert the element
-	if (iter == NULL){ // insert to the end of the queue
-		spListInsertLast(source->elementList,element);
-	}
-	else {
-		spListInsertBeforeCurrent(source->elementList,element);
-	}
-	if (spBPQueueSize(source) > spBPQueueGetMaxSize(source)){ // queue overflow
-		spListGetFirst(source->elementList);
-		for(i=0;i<source->maxSize;i++){ // Find the last element
-			spListGetNext(source->elementList);
-		}
+	// Insert a copy of the element (allocation inside spListInsert)
+	if (iter == NULL) // insert to the end of the queue
+		listIndicator = spListInsertLast(source->elementList,element);
+	else
+		listIndicator = spListInsertBeforeCurrent(source->elementList,element);
+	if (listIndicator == SP_LIST_OUT_OF_MEMORY) //Allocation Fails
+		return SP_BPQUEUE_OUT_OF_MEMORY;
+	if (spBPQueueSize(source) > spBPQueueGetMaxSize(source)){ // Queue overflow
+		spListGetLast(source->elementList); // Move the list pointer to the last element
 		spListRemoveCurrent(source->elementList); // Remove the last element
-	}
-	if (spBPQueueSize(source) == spBPQueueGetMaxSize(source)){
 		return SP_BPQUEUE_FULL;
 	}
 	return SP_BPQUEUE_SUCCESS;
@@ -113,44 +111,36 @@ SP_BPQUEUE_MSG spBPQueueDequeue(SPBPQueue source){
 }
 
 SPListElement spBPQueuePeek(SPBPQueue source){
-	if (source == NULL){
+	if (source == NULL || spBPQueueIsEmpty(source)){
 		return NULL;
 	}
 	return spListElementCopy(spListGetFirst(source->elementList));
 }
 
 SPListElement spBPQueuePeekLast(SPBPQueue source){
-	int i; // Generic loop variable
 	if (source == NULL || spBPQueueIsEmpty(source)){
 		return NULL;
 	}
-	spListGetFirst(source->elementList);
-	for(i=0;i<spBPQueueSize(source)-1;i++){ // Find the last element
-		spListGetNext(source->elementList);
-	}
-	return spListElementCopy(spListGetCurrent(source->elementList));
+	return spListElementCopy(spListGetLast(source->elementList));
 }
 
 double spBPQueueMinValue(SPBPQueue source){
-
 	if (source == NULL || spBPQueueIsEmpty(source)){
-		return 0.0;
+		return -1.0;
 	}
-	return spListElementGetValue(spBPQueuePeek(source));
+	return spListElementGetValue(spListGetFirst(source->elementList));
 }
 
 
 double spBPQueueMaxValue(SPBPQueue source){
 	if (source == NULL || spBPQueueIsEmpty(source)){
-		return 0.0;
+		return -1.0;
 	}
-	return spListElementGetValue(spBPQueuePeekLast(source));
+	return spListElementGetValue(spListGetLast(source->elementList));
 }
 
 bool spBPQueueIsEmpty(SPBPQueue source){
-	if (source == NULL){
-		return false; //TODO check what to write here
-	}
+	assert(source != NULL);
 	if (spBPQueueSize(source) == 0){
 		return true;
 	}
@@ -158,9 +148,7 @@ bool spBPQueueIsEmpty(SPBPQueue source){
 }
 
 bool spBPQueueIsFull(SPBPQueue source){
-	if (source == NULL){
-		return false; //TODO check what to write here
-	}
+	assert(source != NULL);
 	if (spBPQueueSize(source) == source->maxSize){
 		return true;
 	}
