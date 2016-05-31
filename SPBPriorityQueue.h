@@ -115,6 +115,7 @@ SP_BPQUEUE_MSG spBPQueueEnqueue(SPBPQueue source, SPListElement element);
  * @param source - The queue for which the lowest priority element will be removed
  * @return
  * SP_BPQUEUE_INVALID_ARGUMENT if source is NULL
+ * SP_BPQUEUE_EMPTY if source is an empty queue
  * SP_BPQUEUE_SUCCESS the element was removed successfully
  */
 SP_BPQUEUE_MSG spBPQueueDequeue(SPBPQueue source);

@@ -105,6 +105,9 @@ SP_BPQUEUE_MSG spBPQueueDequeue(SPBPQueue source){
 	if (source == NULL){
 		return SP_BPQUEUE_INVALID_ARGUMENT;
 	}
+	if (spBPQueueIsEmpty(source)){
+		return SP_BPQUEUE_EMPTY;
+	}
 	spListGetFirst(source->elementList);
 	spListRemoveCurrent(source->elementList);
 	return SP_BPQUEUE_SUCCESS;
