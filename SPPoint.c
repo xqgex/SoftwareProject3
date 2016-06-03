@@ -21,7 +21,7 @@ SPPoint spPointCreate(double* data, int dim, int index){
 	if (point == NULL) { //Allocation Fails
 		return NULL;
 	}
-	pointData = (double*) malloc(sizeof(double)*dim);  // TODO check if they meant to allocate new array (probably yes)
+	pointData = (double*) malloc(sizeof(double)*dim);
 	if (pointData == NULL) { //Allocation Fails
 		free(point);
 		return NULL;
@@ -61,7 +61,7 @@ int spPointGetIndex(SPPoint point){
 }
 
 double spPointGetAxisCoor(SPPoint point, int axis){
-	assert(point != NULL && axis < point->dim);
+	assert(point != NULL && axis < point->dim && axis >= 0);
 	return point->data[axis];
 }
 
