@@ -70,7 +70,7 @@ static bool basicLoggerDebugTest() {
 	return true;
 }
 
-int main2() {
+int main() {
 	RUN_TEST(basicLoggerTest);
 	RUN_TEST(basicLoggerErrorTest);
 	RUN_TEST(basicLoggerDebugTest);

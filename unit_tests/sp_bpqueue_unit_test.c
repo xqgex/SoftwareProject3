@@ -319,7 +319,7 @@ bool queueDequeueTest(){
 	spListElementDestroy(e3);
 	return true;
 }
-int main() {
+int main2() {
 	RUN_TEST(queueCreateInputTest);
 	RUN_TEST(queueCopyInputTest);
 	RUN_TEST(queueCopySafetyTest);

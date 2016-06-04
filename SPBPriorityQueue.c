@@ -1,5 +1,6 @@
 #include "SPBPriorityQueue.h"
 #include "SPList.h"
+#include "SPListElement.h"
 #include <stdlib.h>
 #include <assert.h>
 
