@@ -67,7 +67,6 @@ SPList spListCreate() {
 		list->current = NULL;
 		list->size = 0;
 		return list;
-
 	}
 }
 
