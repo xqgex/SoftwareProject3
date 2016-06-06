@@ -17,7 +17,7 @@ SPPoint spPointCreate(double* data, int dim, int index){
 	if (index < 0 || dim <= 0 || data == NULL){
 		return NULL; // Invalid parameters
 	}
-	point = (SPPoint) malloc(sizeof(SPPoint));
+	point = (SPPoint) malloc(sizeof(struct sp_point_t));
 	if (point == NULL) { // Allocation Fails
 		return NULL;
 	}
