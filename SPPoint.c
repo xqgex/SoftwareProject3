@@ -2,9 +2,9 @@
 #include <stdio.h> //
 #include <stdlib.h> //
 #include <string.h> //
-#include <assert.h>
+#include <assert.h> //
 
-typedef struct sp_point_t{
+typedef struct sp_point_t {
 	double* data;
 	int dim;
 	int index;
@@ -14,19 +14,19 @@ SPPoint spPointCreate(double* data, int dim, int index){
 	SPPoint point;
 	double* pointData;
 	int i; // Generic loop variable
-	if(index < 0 || dim <= 0 || data == NULL){
+	if (index < 0 || dim <= 0 || data == NULL){
 		return NULL; // Invalid parameters
 	}
 	point = (SPPoint) malloc(sizeof(SPPoint));
-	if (point == NULL) { //Allocation Fails
+	if (point == NULL) { // Allocation Fails
 		return NULL;
 	}
 	pointData = (double*) malloc(sizeof(double)*dim);
-	if (pointData == NULL) { //Allocation Fails
+	if (pointData == NULL) { // Allocation Fails
 		free(point);
 		return NULL;
 	}
-	for (i=0;i<dim;i++){
+	for (i=0;i<dim;i++) {
 		pointData[i] = data[i];
 	}
 	point->data = pointData;
@@ -35,37 +35,37 @@ SPPoint spPointCreate(double* data, int dim, int index){
 	return point;
 }
 
-SPPoint spPointCopy(SPPoint source){
+SPPoint spPointCopy(SPPoint source) {
 	SPPoint newPoint;
 	assert (source != NULL);
 	newPoint = spPointCreate(source->data, source->dim, source->index); // Create new copy of source
 	return newPoint;
 }
 
-void spPointDestroy(SPPoint point){
-	if (point != NULL){
+void spPointDestroy(SPPoint point) {
+	if (point != NULL) {
 		free(point->data);
 		free(point);
 	}
 
 }
 
-int spPointGetDimension(SPPoint point){
-	assert (point != NULL);
+int spPointGetDimension(SPPoint point) {
+	assert(point != NULL);
 	return point->dim;
 }
 
-int spPointGetIndex(SPPoint point){
-	assert (point != NULL);
+int spPointGetIndex(SPPoint point) {
+	assert(point != NULL);
 	return point->index;
 }
 
-double spPointGetAxisCoor(SPPoint point, int axis){
+double spPointGetAxisCoor(SPPoint point, int axis) {
 	assert(point != NULL && axis < point->dim && axis >= 0);
 	return point->data[axis];
 }
 
-double spPointL2SquaredDistance(SPPoint p, SPPoint q){
+double spPointL2SquaredDistance(SPPoint p, SPPoint q) {
 	// Function variables
 	int i; // Generic loop variable
 	double L2Dist=0,axis;
