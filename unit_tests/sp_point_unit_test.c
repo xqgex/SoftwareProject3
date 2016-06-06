@@ -154,7 +154,7 @@ bool pointL2DistanceTest(){
 	return true;
 }
 
-int main3() {
+int main4() {
 	RUN_TEST(pointBasicCopyTest);
 	RUN_TEST(pointBasicL2Distance);
 	RUN_TEST(pointCreateInputTest);

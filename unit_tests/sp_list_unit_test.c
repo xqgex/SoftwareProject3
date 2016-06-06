@@ -421,7 +421,7 @@ static bool testListForEach() {
 	spListElementDestroy(e5);
 	return true;
 }
-int main1() {
+int main2() {
 	RUN_TEST(testElementCreate);
 	RUN_TEST(testElementCopy);
 	RUN_TEST(testElementCompare);
