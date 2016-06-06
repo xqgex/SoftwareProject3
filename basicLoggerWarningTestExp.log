@@ -1,0 +1,7 @@
+---ERROR---
+- file: sp_logger_unit_test.c
+- function: basicLoggerDebugTest
+- message: MSGA
+---WARNING---
+- file: sp_logger_unit_test.c
+- function: basicLoggerDebugTest
