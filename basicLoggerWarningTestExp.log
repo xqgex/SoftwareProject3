@@ -1,7 +1,9 @@
 ---ERROR---
 - file: sp_logger_unit_test.c
 - function: basicLoggerDebugTest
+- line: 92
 - message: MSGA
 ---WARNING---
 - file: sp_logger_unit_test.c
 - function: basicLoggerDebugTest
+- line: 93- message: MSGB
