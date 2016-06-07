@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-typedef struct sp_bp_queue_t {
+struct sp_bp_queue_t {
 	SPList elementList;
 	int maxSize;
 };
@@ -17,7 +17,7 @@ SPBPQueue spBPQueueCreate(int maxSize) {
 	if (maxSize < 0) {
 		return NULL; // Invalid parameters
 	}
-	BPQueue = (SPBPQueue) malloc(sizeof(SPBPQueue));
+	BPQueue = (SPBPQueue) malloc(sizeof(struct sp_bp_queue_t));
 	if (BPQueue == NULL) { // Allocation Fails
 		return NULL;
 	}

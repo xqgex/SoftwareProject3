@@ -4,7 +4,7 @@
 #include <string.h> //
 #include <assert.h> //
 
-typedef struct sp_point_t {
+struct sp_point_t {
 	double* data;
 	int dim;
 	int index;

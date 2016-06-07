@@ -133,7 +133,6 @@ SP_LOGGER_MSG spLoggerPrintMsg(const char* msg) {
 	// Function variables
 	char* out = (char *)msg;
 	size_t stat;
-	int f;
 	// Function code
 	if (logger == NULL) { // If the logger is undefined
 			return SP_LOGGER_UNDIFINED;
@@ -145,10 +144,6 @@ SP_LOGGER_MSG spLoggerPrintMsg(const char* msg) {
 		printf("%s\n",out);
 		fflush(stdout);
 	} else {
-		f = fileno(logger->outputChannel);
-	    if (f < 0) {
-	    	return SP_LOGGER_WRITE_FAIL;
-	    }
 	    strcat(out, "\n");
 	    stat = fwrite(out,1, strlen(out),logger->outputChannel);
 	    if (stat == 0) {

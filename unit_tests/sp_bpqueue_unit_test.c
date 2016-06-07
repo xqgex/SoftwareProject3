@@ -19,6 +19,7 @@ bool queueCreateInputTest(){
 	// Deallocation
 	spBPQueueDestroy(q1);
 	spBPQueueDestroy(q2);
+	spBPQueueDestroy(q3);
 	return true;
 }
 
@@ -28,12 +29,16 @@ bool queueCopyInputTest(){
 	// SPBPQueue variables
 	SPBPQueue q1 = spBPQueueCreate(maxSize);
 	SPBPQueue q2 = spBPQueueCopy(q1);
+	SPBPQueue q3;
+	SPBPQueue q4;
 	SPListElement e1 = spListElementCreate(1,1);
 	SPListElement e2 = spListElementCreate(2,2);
+	SPListElement temp1; // temporary variable to hold peek's return element
+	SPListElement temp2; // temporary variable to hold peek's return element
 	spBPQueueEnqueue(q1,e1);
 	spBPQueueEnqueue(q1,e2);
-	SPBPQueue q3 = spBPQueueCopy(q1);
-	SPBPQueue q4 = spBPQueueCopy(NULL);
+	q3 = spBPQueueCopy(q1);
+	q4 = spBPQueueCopy(NULL);
 	// Assertions
 	ASSERT_TRUE(q1 != NULL);
 	ASSERT_TRUE(q2 != NULL);
@@ -41,14 +46,23 @@ bool queueCopyInputTest(){
 	ASSERT_TRUE(q4 == NULL);
 	ASSERT_TRUE(spBPQueueSize(q2) != spBPQueueSize(q3));
 	ASSERT_TRUE(spBPQueueSize(q1) == spBPQueueSize(q3));
-	ASSERT_TRUE(spListElementCompare(spBPQueuePeek(q1),spBPQueuePeek(q3)) == 0);
+	temp1 = spBPQueuePeek(q1);
+	temp2 = spBPQueuePeek(q3);
+	ASSERT_TRUE(spListElementCompare(temp1,temp2) == 0);
+	spListElementDestroy(temp1);
+	spListElementDestroy(temp2);
 	spBPQueueDequeue(q1);
 	spBPQueueDequeue(q3);
-	ASSERT_TRUE(spListElementCompare(spBPQueuePeek(q1),spBPQueuePeek(q3)) == 0);
+	temp1 = spBPQueuePeek(q1);
+	temp2 = spBPQueuePeek(q3);
+	ASSERT_TRUE(spListElementCompare(temp1,temp2) == 0);
+	spListElementDestroy(temp1);
+	spListElementDestroy(temp2);
 	// Deallocation
 	spBPQueueDestroy(q1);
 	spBPQueueDestroy(q2);
 	spBPQueueDestroy(q3);
+	spBPQueueDestroy(q4);
 	spListElementDestroy(e1);
 	spListElementDestroy(e2);
 	return true;
@@ -59,17 +73,28 @@ bool queueCopySafetyTest(){
 	int maxSize = 2;
 	// SPBPQueue variables
 	SPBPQueue q1 = spBPQueueCreate(maxSize);
+	SPBPQueue q2;
 	SPListElement e1 = spListElementCreate(1,1);
 	SPListElement e2 = spListElementCreate(3,3);
 	SPListElement e3 = spListElementCreate(2,2);
+	SPListElement temp1; // temporary variable to hold peek's return element
+	SPListElement temp2; // temporary variable to hold peek's return element
 	spBPQueueEnqueue(q1,e1);
 	spBPQueueEnqueue(q1,e2);
-	SPBPQueue q2 = spBPQueueCopy(q1);
+	q2 = spBPQueueCopy(q1);
 	// Assertions
-	ASSERT_TRUE(spListElementCompare(spBPQueuePeek(q1),spBPQueuePeek(q2)) == 0);
+	temp1 = spBPQueuePeek(q1);
+	temp2 = spBPQueuePeek(q2);
+	ASSERT_TRUE(spListElementCompare(temp1,temp2) == 0);
+	spListElementDestroy(temp1);
+	spListElementDestroy(temp2);
 	spBPQueueDequeue(q1);
 	spBPQueueEnqueue(q1,e3);
-	ASSERT_TRUE(spListElementCompare(spBPQueuePeek(q1),spBPQueuePeek(q2)) != 0);
+	temp1 = spBPQueuePeek(q1);
+	temp2 = spBPQueuePeek(q2);
+	ASSERT_TRUE(spListElementCompare(temp1,temp2) != 0);
+	spListElementDestroy(temp1);
+	spListElementDestroy(temp2);
 	// Deallocation
 	spBPQueueDestroy(q1);
 	spBPQueueDestroy(q2);
@@ -160,21 +185,38 @@ bool queuePeeksTest(){
 	SPBPQueue q1 = spBPQueueCreate(maxSize);
 	SPListElement e1 = spListElementCreate(2,2);
 	SPListElement e2 = spListElementCreate(1,2);
+	SPListElement temp; // temporary variable to hold peek's return element
 	// Assertions
-	ASSERT_TRUE(spBPQueuePeek(NULL) == NULL);
-	ASSERT_TRUE(spBPQueuePeekLast(NULL) == NULL);
-	ASSERT_TRUE(spBPQueuePeek(q1) == NULL); // empty queue
-	ASSERT_TRUE(spBPQueuePeekLast(q1) == NULL);
+	temp = spBPQueuePeek(NULL);
+	ASSERT_TRUE(temp == NULL);
+	spListElementDestroy(temp);
+	temp = spBPQueuePeekLast(NULL);
+	ASSERT_TRUE(temp == NULL);
+	spListElementDestroy(temp);
+	temp = spBPQueuePeek(q1);// empty queue
+	ASSERT_TRUE(temp == NULL);
+	spListElementDestroy(temp);
+	temp = spBPQueuePeekLast(q1);
+	ASSERT_TRUE(temp == NULL);
+	spListElementDestroy(temp);
 	spBPQueueEnqueue(q1,e1);
-	ASSERT_TRUE(spListElementCompare(spBPQueuePeek(q1),e1) == 0); // single element
-	ASSERT_TRUE(spListElementCompare(spBPQueuePeekLast(q1),e1) == 0);
+	temp = spBPQueuePeek(q1);
+	ASSERT_TRUE(spListElementCompare(temp,e1) == 0); // single element
+	spListElementDestroy(temp);
+	temp = spBPQueuePeekLast(q1);
+	ASSERT_TRUE(spListElementCompare(temp,e1) == 0);
+	spListElementDestroy(temp);
 	spBPQueueEnqueue(q1,e2);
-	ASSERT_TRUE(spListElementCompare(spBPQueuePeek(q1),e1) != 0); // two elements
-	ASSERT_TRUE(spListElementCompare(spBPQueuePeekLast(q1),e1) == 0);
+	temp = spBPQueuePeek(q1);
+	ASSERT_TRUE(spListElementCompare(temp,e1) != 0); // two elements
+	spListElementDestroy(temp);
+	temp = spBPQueuePeekLast(q1);
+	ASSERT_TRUE(spListElementCompare(temp,e1) == 0);
 	// Deallocation
 	spBPQueueDestroy(q1);
 	spListElementDestroy(e1);
 	spListElementDestroy(e2);
+	spListElementDestroy(temp);
 	return true;
 }
 
@@ -259,6 +301,7 @@ bool queueEnqueueTest(){
 	SPListElement e2 = spListElementCreate(3,2);
 	SPListElement e3 = spListElementCreate(2,2);
 	SPListElement order[3] = {e1,e3,e3};
+	SPListElement temp; // temporary variable to hold peek's return element
 	// Assertions
 	msg = spBPQueueEnqueue(NULL,e1);
 	ASSERT_TRUE(msg == SP_BPQUEUE_INVALID_ARGUMENT);
@@ -277,7 +320,9 @@ bool queueEnqueueTest(){
 	ASSERT_TRUE(msg == SP_BPQUEUE_FULL);
 	ASSERT_TRUE(spBPQueueSize(q1) == 3);
 	for (i = 0; i < 3; i++) { // check if the queue saved the right elements
-		ASSERT_TRUE(spListElementCompare(spBPQueuePeek(q1),order[i]) == 0);
+		temp = spBPQueuePeek(q1);
+		ASSERT_TRUE(spListElementCompare(temp,order[i]) == 0);
+		spListElementDestroy(temp);
 		spBPQueueDequeue(q1);
 	}
 	// Deallocation
@@ -299,6 +344,7 @@ bool queueDequeueTest(){
 	SPListElement e2 = spListElementCreate(3,2);
 	SPListElement e3 = spListElementCreate(2,2);
 	SPListElement order[3] = {e1,e3,e2};
+	SPListElement temp; // temporary variable to hold peek's return element
 	// Assertions
 	msg = spBPQueueDequeue(NULL);
 	ASSERT_TRUE(msg == SP_BPQUEUE_INVALID_ARGUMENT);
@@ -306,7 +352,9 @@ bool queueDequeueTest(){
 	spBPQueueEnqueue(q1,e2);
 	spBPQueueEnqueue(q1,e3);
 	for (i = 0; i < 3; i++) {
-		ASSERT_TRUE(spListElementCompare(spBPQueuePeek(q1),order[i]) == 0);
+		temp = spBPQueuePeek(q1);
+		ASSERT_TRUE(spListElementCompare(temp,order[i]) == 0);
+		spListElementDestroy(temp);
 		msg = spBPQueueDequeue(q1);
 		ASSERT_TRUE(msg == SP_BPQUEUE_SUCCESS);
 	}
@@ -319,7 +367,7 @@ bool queueDequeueTest(){
 	spListElementDestroy(e3);
 	return true;
 }
-int main1() {
+int main() {
 	RUN_TEST(queueCreateInputTest);
 	RUN_TEST(queueCopyInputTest);
 	RUN_TEST(queueCopySafetyTest);

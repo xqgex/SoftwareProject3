@@ -40,7 +40,7 @@ bool pointBasicL2Distance() {
 bool pointCreateInputTest(){
 	// Function variables
 	double data1[3] = { 1.0, 2.0, 3.0 };
-	double data2[0];
+	double data2[1];
 	int validIndex = 1;
 	int invalidIndex = -1;
 	int data1Dim = 3;
@@ -154,7 +154,7 @@ bool pointL2DistanceTest(){
 	return true;
 }
 
-int main3() {
+int main() {
 	RUN_TEST(pointBasicCopyTest);
 	RUN_TEST(pointBasicL2Distance);
 	RUN_TEST(pointCreateInputTest);
