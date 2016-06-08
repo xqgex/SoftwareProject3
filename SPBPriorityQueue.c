@@ -1,8 +1,8 @@
 #include "SPBPriorityQueue.h"
 #include "SPList.h"
 #include "SPListElement.h"
-#include <stdlib.h>
-#include <assert.h>
+#include <stdlib.h> // malloc, free, NULL
+#include <assert.h> // assert
 
 struct sp_bp_queue_t {
 	SPList elementList;

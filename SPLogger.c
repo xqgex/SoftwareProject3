@@ -1,17 +1,12 @@
 #include "SPLogger.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <string.h>
+#include <stdio.h> // FILE, stdout, fopen, fclose, sprintf, printf, fflush, stdout
+#include <stdlib.h> // malloc, free
+#include <stdbool.h> // bool, true, false
+#include <string.h> // strlen, strcat
 
 #define SP_LOGGER_OPEN_MODE "w" //File open mode
 
 SPLogger logger = NULL; // Global variable holding the logger
-int maxMessageSize = 4097; // TODO what is the correct number?
 
 struct sp_logger_t {
 	FILE* outputChannel; // The logger file
@@ -59,7 +54,7 @@ void spLoggerDestroy() {
 // Prints error messages at leves {Error, Warning, Info, Debug}
 SP_LOGGER_MSG spLoggerPrintError(const char* msg, const char* file, const char* function, const int line) {
 	// Function variables
-	char out[maxMessageSize];
+	char out[strlen(msg)+strlen(file)+strlen(function)+123];
 	// Function code
 	if (logger == NULL) { // If the logger is undefined
 			return SP_LOGGER_UNDIFINED;
@@ -74,7 +69,7 @@ SP_LOGGER_MSG spLoggerPrintError(const char* msg, const char* file, const char* 
 // Prints warnning messages at levels {Warning, Info, Debug}
 SP_LOGGER_MSG spLoggerPrintWarning(const char* msg, const char* file, const char* function, const int line) {
 	// Function variables
-	char out[maxMessageSize];
+	char out[strlen(msg)+strlen(file)+strlen(function)+125];
 	// Function code
 	if (logger == NULL) { // If the logger is undefined
 			return SP_LOGGER_UNDIFINED;
@@ -93,7 +88,7 @@ SP_LOGGER_MSG spLoggerPrintWarning(const char* msg, const char* file, const char
 // Prints info messages at levels {Info, Debug}
 SP_LOGGER_MSG spLoggerPrintInfo(const char* msg) {
 	// Function variables
-	char out[maxMessageSize];
+	char out[strlen(msg)+24];
 	// Function code
 	if (logger == NULL) { // If the logger is undefined
 			return SP_LOGGER_UNDIFINED;
@@ -112,7 +107,7 @@ SP_LOGGER_MSG spLoggerPrintInfo(const char* msg) {
 // Prints debug messages at level {Debug}
 SP_LOGGER_MSG spLoggerPrintDebug(const char* msg, const char* file, const char* function, const int line) {
 	// Function variables
-	char out[maxMessageSize];
+	char out[strlen(msg)+strlen(file)+strlen(function)+123];
 	// Function code
 	if (logger == NULL) { // If the logger is undefined
 			return SP_LOGGER_UNDIFINED;

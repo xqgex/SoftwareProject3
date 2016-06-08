@@ -1,14 +1,13 @@
 #include "SPPoint.h"
-#include <stdio.h> //
-#include <stdlib.h> //
-#include <string.h> //
-#include <assert.h> //
+#include <stdlib.h> // malloc, free
+#include <assert.h> // assert
 
 struct sp_point_t {
 	double* data;
 	int dim;
 	int index;
 };
+
 SPPoint spPointCreate(double* data, int dim, int index){
 	// Function variables
 	SPPoint point;
@@ -37,7 +36,7 @@ SPPoint spPointCreate(double* data, int dim, int index){
 
 SPPoint spPointCopy(SPPoint source) {
 	SPPoint newPoint;
-	assert (source != NULL);
+	assert(source != NULL);
 	newPoint = spPointCreate(source->data, source->dim, source->index); // Create new copy of source
 	return newPoint;
 }
@@ -47,7 +46,6 @@ void spPointDestroy(SPPoint point) {
 		free(point->data);
 		free(point);
 	}
-
 }
 
 int spPointGetDimension(SPPoint point) {
@@ -77,4 +75,3 @@ double spPointL2SquaredDistance(SPPoint p, SPPoint q) {
 	}
 	return L2Dist;
 }
-

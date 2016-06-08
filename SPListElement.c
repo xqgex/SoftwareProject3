@@ -1,7 +1,6 @@
 #include "SPListElement.h"
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
+#include <stdlib.h> // malloc, free
+#include <assert.h> // assert
 
 struct sp_list_element_t {
 	int index;

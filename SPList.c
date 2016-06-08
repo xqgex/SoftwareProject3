@@ -1,11 +1,12 @@
 #include "SPList.h"
-#include <stdlib.h>
+#include <stdlib.h> // malloc, free, NULL
 
 typedef struct node_t {
 	SPListElement data;
 	struct node_t* next;
 	struct node_t* previous;
 }*Node;
+
 Node createNode(Node previous, Node next, SPListElement element);
 void destroyNode(Node node);
 
